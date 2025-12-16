@@ -1,10 +1,10 @@
 import { afterEach, expect, it } from "vitest";
-import { createShip } from "./ship.ts";
+import { Ship } from "./ship.ts";
 
-let testShip = createShip(5);
+let testShip = new Ship({ length: 5 });
 
 afterEach(() => {
-  testShip = createShip(5);
+  testShip = new Ship({ length: 5 });
 });
 
 it("has a length property that is returned with getLength() method", () => {

@@ -1,27 +1,33 @@
-type ship = {
+export type ship = {
   length: number;
   hits: number;
   isSunk: () => boolean;
   hit: () => void;
 };
 
-export function createShip(length: number): ship {
-  let hits = 0;
+export class Ship implements ship {
+  private _length: number;
+  private _hits: number = 0;
 
-  const isSunk = () => hits === length;
+  constructor({ length }: { length: number }) {
+    this._length = length;
+  }
 
-  const hit = () => {
-    hits++;
-  };
+  public get length() {
+    return this._length;
+  }
 
-  return {
-    get length() {
-      return length;
-    },
-    get hits() {
-      return hits;
-    },
-    isSunk,
-    hit,
-  };
+  public get hits() {
+    return this._hits;
+  }
+
+  public isSunk() {
+    return this._length === this._hits;
+  }
+
+  public hit() {
+    this._hits++;
+
+    return this;
+  }
 }
