@@ -43,17 +43,57 @@ export class Gameboard {
     const rowCoordinateStart: number = Number.parseInt(coordinateStart[0]);
     const columnCoordinateStart: number = Number.parseInt(coordinateStart[1]);
 
-    if (alignment === "horizontal") {
-      for (
-        let column = columnCoordinateStart;
-        column < columnCoordinateStart + ship.length;
-        column++
-      ) {
-        this._playerGrid[rowCoordinateStart][column].containsShipSegmentOf =
-          ship;
+    if (
+      isPlaceable({
+        ship,
+        rowCoordinateStart,
+        columnCoordinateStart,
+        alignment,
+      })
+    ) {
+      if (alignment === "horizontal") {
+        for (
+          let selectedColumn = columnCoordinateStart;
+          selectedColumn < columnCoordinateStart + ship.length;
+          selectedColumn++
+        ) {
+          this._playerGrid[rowCoordinateStart][
+            selectedColumn
+          ].containsShipSegmentOf = ship;
+        }
+      } else {
+        for (
+          let selectedRow = rowCoordinateStart;
+          selectedRow < rowCoordinateStart + ship.length;
+          selectedRow++
+        ) {
+          this._playerGrid[selectedRow][
+            columnCoordinateStart
+          ].containsShipSegmentOf = ship;
+        }
       }
-    }
+    } else return this; //no ship placed
 
     return this;
+
+    function isPlaceable({
+      ship,
+      rowCoordinateStart,
+      columnCoordinateStart,
+      alignment,
+    }: {
+      ship: Ship;
+      rowCoordinateStart: number;
+      columnCoordinateStart: number;
+      alignment: ShipAlignment;
+    }) {
+      const maxPositions =
+        alignment === "horizontal" ? GRID_COLUMNS : GRID_ROWS;
+      const startPosition =
+        alignment === "horizontal" ? columnCoordinateStart : rowCoordinateStart;
+      const availablePositions = maxPositions - startPosition;
+
+      return ship.length <= availablePositions;
+    }
   }
 }
