@@ -1,19 +1,25 @@
 import { Ship } from "./ship";
 
+type Digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+type TwoDigits = `${Digit}${Digit}`;
+
 type ShipAlignment = "horizontal" | "vertical";
 
-type GridBlock = {
-  containsShipSegmentOf: Ship;
-};
+class GridBlock {
+  public containsShipSegmentOf: Ship | null = null;
 
-const [GRID_COLUMNS, GRID_ROWS] = [10, 10];
+  constructor() {}
+}
+
+const [GRID_ROWS, GRID_COLUMNS] = [10, 10];
 
 export class Gameboard {
-  private _playerGrid: GridBlock[][] = new Array(GRID_ROWS).fill(
-    new Array<GridBlock>(GRID_COLUMNS)
+  private _playerGrid: GridBlock[][] = Array.from({ length: GRID_ROWS }, () =>
+    Array.from({ length: GRID_COLUMNS }, () => new GridBlock())
   );
-  private _opponentGrid: GridBlock[][] = new Array(GRID_ROWS).fill(
-    new Array(GRID_COLUMNS).fill("start")
+
+  private _opponentGrid: GridBlock[][] = Array.from({ length: GRID_ROWS }, () =>
+    Array.from({ length: GRID_COLUMNS }, () => new GridBlock())
   );
   //   constructor({}: {}) {}
 
@@ -28,13 +34,25 @@ export class Gameboard {
   public placeShip({
     ship,
     coordinateStart,
-    alignment,
+    alignment = "horizontal",
   }: {
     ship: Ship;
-    coordinateStart: string;
+    coordinateStart: TwoDigits;
     alignment: ShipAlignment;
   }) {
-    this._playerGrid[0][0] = { containsShipSegmentOf: ship };
+    const rowCoordinateStart: number = Number.parseInt(coordinateStart[0]);
+    const columnCoordinateStart: number = Number.parseInt(coordinateStart[1]);
+
+    if (alignment === "horizontal") {
+      for (
+        let column = columnCoordinateStart;
+        column < columnCoordinateStart + ship.length;
+        column++
+      ) {
+        this._playerGrid[rowCoordinateStart][column].containsShipSegmentOf =
+          ship;
+      }
+    }
 
     return this;
   }
