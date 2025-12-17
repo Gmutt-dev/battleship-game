@@ -1,11 +1,4 @@
-export type ship = {
-  length: number;
-  hits: number;
-  isSunk: () => boolean;
-  hit: () => void;
-};
-
-export class Ship implements ship {
+export class Ship {
   private _length: number;
   private _hits: number = 0;
 

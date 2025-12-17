@@ -1,33 +1,19 @@
-import type { ship } from "./ship";
+import { Ship } from "./ship";
 
-type shipAlignment = "horizontal" | "vertical";
+type ShipAlignment = "horizontal" | "vertical";
 
-type gameboard = {
-  playerGrid: gridBlock[][];
-  opponentGrid: gridBlock[][];
-  placeShip: ({
-    ship,
-    coordinateStart,
-    alignment,
-  }: {
-    ship: ship;
-    coordinateStart: string;
-    alignment: shipAlignment;
-  }) => gameboard;
+type GridBlock = {
+  containsShipSegmentOf: Ship;
 };
 
-type gridBlock = {
-  containsShipSegmentOf: ship;
-};
+const [GRID_COLUMNS, GRID_ROWS] = [10, 10];
 
-const [GRID_WIDTH, GRID_HEIGHT] = [10, 10];
-
-export class Gameboard implements gameboard {
-  private _playerGrid: gridBlock[][] = new Array(GRID_WIDTH).fill(
-    new Array<gridBlock>(GRID_HEIGHT)
+export class Gameboard {
+  private _playerGrid: GridBlock[][] = new Array(GRID_ROWS).fill(
+    new Array<GridBlock>(GRID_COLUMNS)
   );
-  private _opponentGrid: gridBlock[][] = new Array(GRID_WIDTH).fill(
-    new Array<gridBlock>(GRID_HEIGHT)
+  private _opponentGrid: GridBlock[][] = new Array(GRID_ROWS).fill(
+    new Array(GRID_COLUMNS).fill("start")
   );
   //   constructor({}: {}) {}
 
@@ -44,9 +30,9 @@ export class Gameboard implements gameboard {
     coordinateStart,
     alignment,
   }: {
-    ship: ship;
+    ship: Ship;
     coordinateStart: string;
-    alignment: shipAlignment;
+    alignment: ShipAlignment;
   }) {
     this._playerGrid[0][0] = { containsShipSegmentOf: ship };
 
