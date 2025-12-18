@@ -58,35 +58,36 @@ export class GameBoard {
     const columnCoordinateStart: number = Number.parseInt(coordinateStart[1]);
 
     if (
-      isPlaceable({
+      !isPlaceable({
         ship,
         rowCoordinateStart,
         columnCoordinateStart,
         alignment,
       })
-    ) {
-      if (alignment === "horizontal") {
-        for (
-          let selectedColumn = columnCoordinateStart;
-          selectedColumn < columnCoordinateStart + ship.length;
-          selectedColumn++
-        ) {
-          this._playerGrid[rowCoordinateStart][
-            selectedColumn
-          ].containsShipSegmentOf = ship;
-        }
-      } else {
-        for (
-          let selectedRow = rowCoordinateStart;
-          selectedRow < rowCoordinateStart + ship.length;
-          selectedRow++
-        ) {
-          this._playerGrid[selectedRow][
-            columnCoordinateStart
-          ].containsShipSegmentOf = ship;
-        }
+    )
+      return this;
+
+    if (alignment === "horizontal") {
+      for (
+        let selectedColumn = columnCoordinateStart;
+        selectedColumn < columnCoordinateStart + ship.length;
+        selectedColumn++
+      ) {
+        this._playerGrid[rowCoordinateStart][
+          selectedColumn
+        ].containsShipSegmentOf = ship;
       }
-    } else return this; //no ship placed
+    } else {
+      for (
+        let selectedRow = rowCoordinateStart;
+        selectedRow < rowCoordinateStart + ship.length;
+        selectedRow++
+      ) {
+        this._playerGrid[selectedRow][
+          columnCoordinateStart
+        ].containsShipSegmentOf = ship;
+      }
+    }
 
     return this;
   }
