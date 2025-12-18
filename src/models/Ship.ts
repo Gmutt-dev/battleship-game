@@ -10,10 +10,6 @@ export class Ship {
     return this._length;
   }
 
-  public get hits() {
-    return this._hits;
-  }
-
   public isSunk() {
     return this._length === this._hits;
   }
