@@ -1,5 +1,5 @@
 import { afterEach, expect, it } from "vitest";
-import { Ship } from "./ship.ts";
+import { Ship } from "./Ship.ts";
 
 let testShip = new Ship({ length: 5 });
 

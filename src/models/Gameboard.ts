@@ -1,17 +1,31 @@
-import { Ship } from "./ship";
+import { GridBlock } from "./GridBlock";
+import { Ship } from "./Ship";
 
 type Digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
 type TwoDigits = `${Digit}${Digit}`;
 
 type ShipAlignment = "horizontal" | "vertical";
 
-class GridBlock {
-  public containsShipSegmentOf: Ship | null = null;
-
-  constructor() {}
-}
-
 const [GRID_ROWS, GRID_COLUMNS] = [10, 10];
+
+function isPlaceable({
+  ship,
+  rowCoordinateStart,
+  columnCoordinateStart,
+  alignment,
+}: {
+  ship: Ship;
+  rowCoordinateStart: number;
+  columnCoordinateStart: number;
+  alignment: ShipAlignment;
+}) {
+  const maxPositions = alignment === "horizontal" ? GRID_COLUMNS : GRID_ROWS;
+  const startPosition =
+    alignment === "horizontal" ? columnCoordinateStart : rowCoordinateStart;
+  const availablePositions = maxPositions - startPosition;
+
+  return ship.length <= availablePositions;
+}
 
 export class Gameboard {
   private _playerGrid: GridBlock[][] = Array.from({ length: GRID_ROWS }, () =>
@@ -75,25 +89,5 @@ export class Gameboard {
     } else return this; //no ship placed
 
     return this;
-
-    function isPlaceable({
-      ship,
-      rowCoordinateStart,
-      columnCoordinateStart,
-      alignment,
-    }: {
-      ship: Ship;
-      rowCoordinateStart: number;
-      columnCoordinateStart: number;
-      alignment: ShipAlignment;
-    }) {
-      const maxPositions =
-        alignment === "horizontal" ? GRID_COLUMNS : GRID_ROWS;
-      const startPosition =
-        alignment === "horizontal" ? columnCoordinateStart : rowCoordinateStart;
-      const availablePositions = maxPositions - startPosition;
-
-      return ship.length <= availablePositions;
-    }
   }
 }

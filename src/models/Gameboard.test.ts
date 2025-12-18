@@ -1,6 +1,6 @@
 import { expect, it, afterEach } from "vitest";
-import { Gameboard } from "./gameboard.ts";
-import { Ship } from "./ship.ts";
+import { Gameboard } from "./Gameboard.ts";
+import { Ship } from "./Ship.ts";
 
 let testGameboard = new Gameboard();
 
