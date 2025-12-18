@@ -1,11 +1,11 @@
 import { expect, it, afterEach } from "vitest";
-import { Gameboard } from "./Gameboard.ts";
+import { GameBoard } from "./GameBoard.ts";
 import { Ship } from "./Ship.ts";
 
-let testGameboard = new Gameboard();
+let testGameboard = new GameBoard();
 
 afterEach(() => {
-  testGameboard = new Gameboard();
+  testGameboard = new GameBoard();
 });
 
 it("can place a ship on the player grid at top left 00 coordinates horizontally", () => {

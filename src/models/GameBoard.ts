@@ -27,7 +27,7 @@ function isPlaceable({
   return ship.length <= availablePositions;
 }
 
-export class Gameboard {
+export class GameBoard {
   private _playerGrid: GridBlock[][] = Array.from({ length: GRID_ROWS }, () =>
     Array.from({ length: GRID_COLUMNS }, () => new GridBlock())
   );
