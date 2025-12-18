@@ -37,14 +37,6 @@ export class GameBoard {
   );
   //   constructor({}: {}) {}
 
-  public get playerGrid() {
-    return this._playerGrid;
-  }
-
-  public get opponentGrid() {
-    return this._opponentGrid;
-  }
-
   public placeShip({
     ship,
     coordinateStart,
