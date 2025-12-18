@@ -8,6 +8,10 @@ type ShipAlignment = "horizontal" | "vertical";
 
 const [GRID_ROWS, GRID_COLUMNS] = [10, 10];
 
+function extractRowAndColumnCoordinates(coordinates: TwoDigits): number[] {
+  return [Number.parseInt(coordinates[0]), Number.parseInt(coordinates[1])];
+}
+
 function isPlaceable({
   ship,
   rowCoordinateStart,
@@ -18,7 +22,7 @@ function isPlaceable({
   rowCoordinateStart: number;
   columnCoordinateStart: number;
   alignment: ShipAlignment;
-}) {
+}): boolean {
   const maxPositions = alignment === "horizontal" ? GRID_COLUMNS : GRID_ROWS;
   const startPosition =
     alignment === "horizontal" ? columnCoordinateStart : rowCoordinateStart;
@@ -39,15 +43,15 @@ export class GameBoard {
 
   public placeShip({
     ship,
-    coordinateStart,
+    coordinatesStart,
     alignment = "horizontal",
   }: {
     ship: Ship;
-    coordinateStart: TwoDigits;
+    coordinatesStart: TwoDigits;
     alignment: ShipAlignment;
   }) {
-    const rowCoordinateStart: number = Number.parseInt(coordinateStart[0]);
-    const columnCoordinateStart: number = Number.parseInt(coordinateStart[1]);
+    const [rowCoordinateStart, columnCoordinateStart] =
+      extractRowAndColumnCoordinates(coordinatesStart);
 
     if (
       !isPlaceable({
