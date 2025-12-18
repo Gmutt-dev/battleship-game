@@ -1,9 +1,15 @@
 export class Ship {
+  private _type: string;
   private _length: number;
   private _hits: number = 0;
 
-  constructor({ length }: { length: number }) {
+  constructor({ type, length }: { type: string; length: number }) {
     this._length = length;
+    this._type = type;
+  }
+
+  public get type() {
+    return this._type;
   }
 
   public get length() {

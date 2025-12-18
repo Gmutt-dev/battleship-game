@@ -1,16 +1,20 @@
 import { afterEach, expect, it } from "vitest";
 import { Ship } from "./Ship.ts";
 
-let testShip = new Ship({ length: 5 });
+let testShip = new Ship({ type: "Carrier", length: 5 });
 
 afterEach(() => {
-  testShip = new Ship({ length: 5 });
+  testShip = new Ship({ type: "Carrier", length: 5 });
 });
 
 // tests that can't be run on the public interface has been uncommented below
 
 it("has a length property that is returned with getLength() method", () => {
   expect(testShip.length).toBe(5);
+});
+
+it("has a type/class of ship", () => {
+  expect(testShip.type).toBe("Carrier");
 });
 // it("has a hits property that is returned with the getHits() method - should be 0 for a newly created ship", () => {
 //   expect(testShip.hits).toBe(0);
