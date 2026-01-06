@@ -1,15 +1,22 @@
 import { GridBlock } from "./GridBlock";
 import { type Ship } from "./Ship";
 
-type Digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
-type TwoDigits = `${Digit}${Digit}`;
+type ColumnLetter = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J";
+type RowNumber = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+type StringCoordinates = `${ColumnLetter}${RowNumber}`;
 
 type ShipAlignment = "horizontal" | "vertical";
 
 const [GRID_ROWS, GRID_COLUMNS] = [10, 10];
 
-function extractRowAndColumnCoordinates(coordinates: TwoDigits): number[] {
-  return [Number.parseInt(coordinates[0]), Number.parseInt(coordinates[1])];
+function extractRowAndColumnCoordinates(
+  coordinates: StringCoordinates
+): number[] {
+  const columnLetters = "ABCDEFGHIJ";
+  return [
+    columnLetters.indexOf(coordinates[0]),
+    Number.parseInt(coordinates[1]),
+  ];
 }
 
 function isPlaceable({
@@ -47,9 +54,9 @@ export class GameBoard {
     alignment = "horizontal",
   }: {
     ship: Ship;
-    coordinatesStart: TwoDigits;
+    coordinatesStart: StringCoordinates;
     alignment: ShipAlignment;
-  }) {
+  }): Ship {
     const [rowCoordinateStart, columnCoordinateStart] =
       extractRowAndColumnCoordinates(coordinatesStart);
 
@@ -85,6 +92,10 @@ export class GameBoard {
       }
     }
 
+    return this;
+  }
+
+  public receiveAttack(coordinates: StringCoordinates): GameBoard {
     return this;
   }
 }
