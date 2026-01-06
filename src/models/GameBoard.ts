@@ -2,12 +2,12 @@ import { GridBlock } from "./GridBlock";
 import { type Ship } from "./Ship";
 
 type ColumnLetter = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J";
-type RowNumber = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+type RowNumber = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10";
 type StringCoordinates = `${ColumnLetter}${RowNumber}`;
 
 type ShipAlignment = "horizontal" | "vertical";
 
-const [GRID_ROWS, GRID_COLUMNS] = [10, 10];
+const [GRID_COLUMNS, GRID_ROWS] = [10, 10];
 
 function extractRowAndColumnCoordinates(
   coordinates: StringCoordinates
@@ -15,7 +15,7 @@ function extractRowAndColumnCoordinates(
   const columnLetters = "ABCDEFGHIJ";
   return [
     columnLetters.indexOf(coordinates[0]),
-    Number.parseInt(coordinates[1]),
+    Number.parseInt(coordinates.slice(1)),
   ];
 }
 
