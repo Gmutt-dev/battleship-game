@@ -2,13 +2,11 @@ import { Player } from "../models/Player";
 
 class GameController {
   private gameStage: "setup" | "playing" | "end";
-  public activePlayer: Player | null;
-  public opponentPlayer: Player | null;
+  public activePlayer?: Player;
+  public opponentPlayer?: Player;
 
   constructor() {
     this.gameStage = "setup";
-    this.activePlayer = null;
-    this.activePlayer = null;
   }
 
   //   public reset() {
