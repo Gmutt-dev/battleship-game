@@ -13,12 +13,15 @@ class GameController {
   //     this.gameStage = "setup";
   //   }
 
-  public createPlayer(playerDetails: {
-    name: string;
-    type: "human" | "computer";
-  }) {
-    if (this.activePlayer) this.opponentPlayer = new Player(playerDetails);
-    else this.activePlayer = new Player(playerDetails);
+  public createPlayers(
+    playersDetails: {
+      name: string;
+      type: "human" | "computer";
+    }[]
+  ) {
+    [this.activePlayer, this.opponentPlayer] = playersDetails.map(
+      (playerDetails) => new Player(playerDetails)
+    );
   }
 
   //   public startRound({
