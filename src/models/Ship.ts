@@ -1,27 +1,23 @@
 export class Ship {
-  private _type: string;
-  private _length: number;
-  private _hits: number = 0;
+  public readonly type: string;
+  public readonly segments: number;
+  private hits: number = 0;
 
-  constructor({ type, length }: { type: string; length: number }) {
-    this._length = length;
-    this._type = type;
-  }
-
-  public get type() {
-    return this._type;
+  constructor({ type, segments }: { type: string; segments: number }) {
+    this.type = type;
+    this.segments = segments;
   }
 
   public get length() {
-    return this._length;
+    return this.segments;
   }
 
   public isSunk() {
-    return this._length === this._hits;
+    return this.segments === this.hits;
   }
 
-  public hit() {
-    this._hits++;
+  public hit(): Ship {
+    this.hits++;
 
     return this;
   }
