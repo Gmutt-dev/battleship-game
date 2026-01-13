@@ -22,11 +22,10 @@ const [GRID_COLUMNS, GRID_ROWS] = [10, 10];
 const COLUMN_LETTERS = "ABCDEFGHIJ";
 
 export class GameBoard {
-  public targetGrid: ReadonlyArray<ReadonlyArray<TargetGridBlock>> | null;
+  public targetGrid?: ReadonlyArray<ReadonlyArray<TargetGridBlock>>;
   public readonly oceanGrid: ReadonlyArray<ReadonlyArray<OceanGridBlock>>;
 
   constructor() {
-    this.targetGrid = null;
     this.oceanGrid = Array.from({ length: GRID_COLUMNS }, (v, columnIndex) =>
       Array.from({ length: GRID_ROWS }, (v, rowIndex) => {
         const coordinatesFromArrayIndexes: Coordinates = {
