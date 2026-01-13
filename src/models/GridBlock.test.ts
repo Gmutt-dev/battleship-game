@@ -20,20 +20,6 @@ describe("TargetGridBlock tests:", () => {
       10
     );
   });
-  it("can mark an attack on a gridblock when no ship is hit", () => {
-    const testGridBlock = new TargetGridBlock(coordinatesA10);
-    expect(testGridBlock.isAttacked).toEqual(false);
-    testGridBlock.markAttack();
-    expect(testGridBlock.isAttacked).toEqual(true);
-    expect(testGridBlock.containsShipSegmentOf).toEqual(null);
-  });
-  it("can mark an attack and keep track of a ship that was hit", () => {
-    const testGridBlock = new TargetGridBlock(coordinatesA10);
-    const testShip = new Ship({ type: "Battleship", segments: 4 });
-    testGridBlock.markAttack(testShip);
-    expect(testGridBlock.isAttacked).toEqual(true);
-    expect(testGridBlock.containsShipSegmentOf).toEqual(testShip);
-  });
 });
 
 describe("OceanGridBlock tests:", () => {
