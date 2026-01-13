@@ -1,31 +1,18 @@
 import { type Ship } from "./Ship";
-import {
-  type StringCoordinates,
-  type ColumnLetter,
-  type RowNumber,
-  extractColumnAndRowCoordinates,
-} from "./GameBoard";
+import { type Coordinates } from "./GameBoard";
 
 class GridBlock {
-  public coordinates: StringCoordinates;
+  public readonly coordinates: Coordinates;
   public isAttacked: boolean = false;
   public containsShipSegmentOf: Ship | null = null;
 
-  constructor(coordinates: StringCoordinates) {
+  constructor(coordinates: Coordinates) {
     this.coordinates = coordinates;
-  }
-
-  public get columnCoordinate(): ColumnLetter {
-    return extractColumnAndRowCoordinates(this.coordinates)[0];
-  }
-
-  public get rowCoordinate(): RowNumber {
-    return extractColumnAndRowCoordinates(this.coordinates)[1];
   }
 }
 
 export class TargetGridBlock extends GridBlock {
-  constructor(coordinates: StringCoordinates) {
+  constructor(coordinates: Coordinates) {
     super(coordinates);
   }
   public markAttack(ship: Ship | null = null) {
@@ -35,7 +22,7 @@ export class TargetGridBlock extends GridBlock {
 }
 
 export class OceanGridBlock extends GridBlock {
-  constructor(coordinates: StringCoordinates) {
+  constructor(coordinates: Coordinates) {
     super(coordinates);
   }
 
