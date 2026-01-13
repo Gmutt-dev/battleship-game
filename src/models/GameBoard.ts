@@ -1,4 +1,5 @@
 import { TargetGridBlock, OceanGridBlock } from "./GridBlock";
+import type { Player } from "./Player";
 import { Ship } from "./Ship";
 
 export type ColumnLetter =
@@ -21,19 +22,11 @@ const [GRID_COLUMNS, GRID_ROWS] = [10, 10];
 const COLUMN_LETTERS = "ABCDEFGHIJ";
 
 export class GameBoard {
-  public readonly targetGrid: ReadonlyArray<ReadonlyArray<TargetGridBlock>>;
+  public targetGrid: ReadonlyArray<ReadonlyArray<TargetGridBlock>> | null;
   public readonly oceanGrid: ReadonlyArray<ReadonlyArray<OceanGridBlock>>;
 
   constructor() {
-    this.targetGrid = Array.from({ length: GRID_COLUMNS }, (v, columnIndex) =>
-      Array.from({ length: GRID_ROWS }, (v, rowIndex) => {
-        const coordinatesFromArrayIndexes: Coordinates = {
-          columnLetter: COLUMN_LETTERS[columnIndex] as ColumnLetter,
-          rowNumber: (rowIndex + 1) as RowNumber,
-        };
-        return new TargetGridBlock(coordinatesFromArrayIndexes);
-      })
-    );
+    this.targetGrid = null;
     this.oceanGrid = Array.from({ length: GRID_COLUMNS }, (v, columnIndex) =>
       Array.from({ length: GRID_ROWS }, (v, rowIndex) => {
         const coordinatesFromArrayIndexes: Coordinates = {
@@ -41,6 +34,21 @@ export class GameBoard {
           rowNumber: (rowIndex + 1) as RowNumber,
         };
         return new OceanGridBlock(coordinatesFromArrayIndexes);
+      })
+    );
+  }
+
+  public get publicGrid(): ReadonlyArray<ReadonlyArray<TargetGridBlock>> {
+    return this.oceanGrid.map((column) =>
+      column.map((oceanGridBlock) => {
+        const { receiveAttack, ...gridBlockWithoutOceanProperties } =
+          oceanGridBlock;
+        return gridBlockWithoutOceanProperties.isAttacked
+          ? gridBlockWithoutOceanProperties
+          : {
+              ...gridBlockWithoutOceanProperties,
+              containsShipSegmentOf: "unknown",
+            };
       })
     );
   }
@@ -111,18 +119,5 @@ export class GameBoard {
           gridBlock.coordinates.rowNumber === coordinates.rowNumber
       )
       .receiveAttack();
-  }
-
-  public markAttack(coordinates: Coordinates, hitShip: Ship | null): GameBoard {
-    this.targetGrid
-      .flat()
-      .find(
-        (gridBlock) =>
-          gridBlock.coordinates.columnLetter === coordinates.columnLetter &&
-          gridBlock.coordinates.rowNumber === coordinates.rowNumber
-      )
-      .markAttack(hitShip);
-
-    return this;
   }
 }

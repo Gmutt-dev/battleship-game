@@ -145,18 +145,12 @@ it("won't place ship if it will collide with another already placed ship -> canc
 });
 
 describe("Relay tests:", () => {
-  const testGameboardOfActivePlayer = new GameBoard();
+  // const testGameboardOfActivePlayer = new GameBoard();
   const testGameboardOfOpponentPlayer = new GameBoard();
   let attackedShip: Ship | null;
   it("can relay a received attack onward to the oceangridblock' method for handling", () => {
     const spy = vi.spyOn(testGameboardOfOpponentPlayer, "receiveAttack");
     attackedShip = testGameboardOfOpponentPlayer.receiveAttack(coordinatesA1);
-    expect(spy).toReturn();
-    spy.mockRestore();
-  });
-  it("can send a mark attack onward to the targetgrid method for handling", () => {
-    const spy = vi.spyOn(testGameboardOfActivePlayer, "markAttack");
-    testGameboardOfActivePlayer.markAttack(coordinatesA1, attackedShip);
     expect(spy).toReturn();
     spy.mockRestore();
   });
