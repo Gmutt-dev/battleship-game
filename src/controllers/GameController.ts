@@ -1,4 +1,4 @@
-import { Player } from "../models/Player";
+import { Player, type PlayerType } from "../models/Player";
 
 class GameController {
   private gameStage: "setup" | "playing" | "end";
@@ -16,7 +16,7 @@ class GameController {
   public createPlayers(
     playersDetails: {
       name: string;
-      type: "human" | "computer";
+      type: PlayerType;
     }[]
   ) {
     [this.activePlayer, this.opponentPlayer] = playersDetails.map(
