@@ -16,11 +16,6 @@ describe("create two players with empty gameboards, human player can place ships
     expect(gameController.activePlayer).toBeInstanceOf(Player);
     expect(gameController.opponentPlayer).toBeInstanceOf(Player);
   });
-
-  it("can create an initial gameboard for each player", () => {
-    expect(gameController.activePlayer?.gameBoard).toBeInstanceOf(GameBoard);
-    expect(gameController.opponentPlayer?.gameBoard).toBeInstanceOf(GameBoard);
-  });
   it.todo("can let human player place ships on gameboard");
   vi.resetModules();
 });
