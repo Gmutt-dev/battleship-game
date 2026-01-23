@@ -4,7 +4,6 @@ import { type Coordinates } from "./GameBoard";
 class GridBlock {
   public readonly coordinates: Coordinates;
   public isAttacked: boolean = false;
-  public containsShipSegmentOf: Ship | "unknown" | null = null;
 
   constructor(coordinates: Coordinates) {
     this.coordinates = coordinates;
@@ -12,12 +11,14 @@ class GridBlock {
 }
 
 export class TargetGridBlock extends GridBlock {
+  public containsShipSegmentOf: Ship | null | "unknown" = "unknown";
   constructor(coordinates: Coordinates) {
     super(coordinates);
   }
 }
 
 export class OceanGridBlock extends GridBlock {
+  public containsShipSegmentOf: Ship | null = null;
   constructor(coordinates: Coordinates) {
     super(coordinates);
   }
