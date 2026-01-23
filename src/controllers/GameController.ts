@@ -22,11 +22,12 @@ class GameController {
     [this.activePlayer, this.opponentPlayer] = playersDetails.map(
       (playerDetails) => new Player(playerDetails)
     );
-    this.activePlayer.gameBoard.linkOpponentGameBoard({
-      opponentGameBoard: this.opponentPlayer.gameBoard,
+    this.activePlayer.gameBoard.linkOpponentPublicGrid({
+      opponentGetPublicGridFunction:
+        this.opponentPlayer.gameBoard.getPublicGrid,
     });
-    this.opponentPlayer.gameBoard.linkOpponentGameBoard({
-      opponentGameBoard: this.activePlayer.gameBoard,
+    this.opponentPlayer.gameBoard.linkOpponentPublicGrid({
+      opponentGetPublicGridFunction: this.activePlayer.gameBoard.getPublicGrid,
     });
   }
 

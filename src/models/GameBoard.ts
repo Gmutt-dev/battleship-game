@@ -1,5 +1,4 @@
 import { TargetGridBlock, OceanGridBlock } from "./GridBlock";
-import type { Player } from "./Player";
 import { Ship } from "./Ship";
 
 export type ColumnLetter =
@@ -39,13 +38,14 @@ export class GameBoard {
     );
   }
 
-  public linkOpponentGameBoard({
-    opponentGameBoard,
+  public linkOpponentPublicGrid({
+    opponentGetPublicGridFunction,
   }: {
-    opponentGameBoard: GameBoard;
+    opponentGetPublicGridFunction: () => ReadonlyArray<
+      ReadonlyArray<TargetGridBlock>
+    >;
   }) {
-    this.getOpponentPublicGrid =
-      opponentGameBoard.getPublicGrid.bind(opponentGameBoard);
+    this.getOpponentPublicGrid = opponentGetPublicGridFunction;
   }
 
   public get targetGrid(): ReadonlyArray<ReadonlyArray<TargetGridBlock>> {
@@ -57,7 +57,7 @@ export class GameBoard {
     return this.getOpponentPublicGrid();
   }
 
-  public getPublicGrid(): ReadonlyArray<ReadonlyArray<TargetGridBlock>> {
+  public getPublicGrid = (): ReadonlyArray<ReadonlyArray<TargetGridBlock>> => {
     return this.oceanGrid.map((column) =>
       column.map((oceanGridBlock) => {
         const { receiveAttack, ...gridBlockWithoutOceanProperties } =
@@ -74,7 +74,7 @@ export class GameBoard {
             );
       })
     );
-  }
+  };
 
   public placeShip({
     shipDetails,

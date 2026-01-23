@@ -35,8 +35,8 @@ it("has an oceangrid with a last element with coordinates of J10", () => {
 it("can link an opponent's gameboard for access to opponent's .getPublicGrid() that is used by the targetGrid getter to return a calculated targetGrid for the active player", () => {
   const player1GameBoard = new GameBoard();
   const player2GameBoard = new GameBoard();
-  player1GameBoard.linkOpponentGameBoard({
-    opponentGameBoard: player2GameBoard,
+  player1GameBoard.linkOpponentPublicGrid({
+    opponentGetPublicGridFunction: player2GameBoard.getPublicGrid,
   });
   expect(
     player1GameBoard.targetGrid
