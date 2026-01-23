@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { GameBoard, type Coordinates } from "./GameBoard.ts";
-import { OceanGridBlock } from "./GridBlock";
+import { TargetGridBlock, OceanGridBlock } from "./GridBlock";
 import { Ship } from "./Ship.ts";
 
 const coordinatesA1: Coordinates = { columnLetter: "A", rowNumber: 1 };
@@ -30,6 +30,19 @@ it("has an oceangrid with a last element with coordinates of J10", () => {
   expect(
     testOceanGrid.flat()[testOceanGrid.flat().length - 1].coordinates
   ).toEqual(coordinatesJ10);
+});
+
+it("can link an opponent's gameboard for access to opponent's .getPublicGrid() that is used by the targetGrid getter to return a calculated targetGrid for the active player", () => {
+  const player1GameBoard = new GameBoard();
+  const player2GameBoard = new GameBoard();
+  player1GameBoard.linkOpponentGameBoard({
+    opponentGameBoard: player2GameBoard,
+  });
+  expect(
+    player1GameBoard.targetGrid
+      .flat()
+      .every((element) => element instanceof TargetGridBlock)
+  ).toEqual(true);
 });
 
 it("can place a ship on the player grid at top left A1 coordinates horizontally", () => {

@@ -22,8 +22,10 @@ const [GRID_COLUMNS, GRID_ROWS] = [10, 10];
 const COLUMN_LETTERS = "ABCDEFGHIJ";
 
 export class GameBoard {
-  public targetGrid?: ReadonlyArray<ReadonlyArray<TargetGridBlock>>;
   public readonly oceanGrid: ReadonlyArray<ReadonlyArray<OceanGridBlock>>;
+  private getOpponentPublicGrid?: () => ReadonlyArray<
+    ReadonlyArray<TargetGridBlock>
+  >;
 
   constructor() {
     this.oceanGrid = Array.from({ length: GRID_COLUMNS }, (v, columnIndex) =>
@@ -37,17 +39,39 @@ export class GameBoard {
     );
   }
 
-  public get publicGrid(): ReadonlyArray<ReadonlyArray<TargetGridBlock>> {
+  public linkOpponentGameBoard({
+    opponentGameBoard,
+  }: {
+    opponentGameBoard: GameBoard;
+  }) {
+    this.getOpponentPublicGrid =
+      opponentGameBoard.getPublicGrid.bind(opponentGameBoard);
+  }
+
+  public get targetGrid(): ReadonlyArray<ReadonlyArray<TargetGridBlock>> {
+    if (!this.getOpponentPublicGrid)
+      throw new Error(
+        "Opponent grid not set with .linkOpponentBoard(), so cannot return opponent's public grid"
+      );
+
+    return this.getOpponentPublicGrid();
+  }
+
+  public getPublicGrid(): ReadonlyArray<ReadonlyArray<TargetGridBlock>> {
     return this.oceanGrid.map((column) =>
       column.map((oceanGridBlock) => {
         const { receiveAttack, ...gridBlockWithoutOceanProperties } =
           oceanGridBlock;
         return gridBlockWithoutOceanProperties.isAttacked
-          ? gridBlockWithoutOceanProperties
-          : {
-              ...gridBlockWithoutOceanProperties,
-              containsShipSegmentOf: "unknown",
-            };
+          ? Object.assign(
+              new TargetGridBlock(gridBlockWithoutOceanProperties.coordinates),
+              gridBlockWithoutOceanProperties
+            )
+          : Object.assign(
+              new TargetGridBlock(gridBlockWithoutOceanProperties.coordinates),
+              gridBlockWithoutOceanProperties,
+              { containsShipSegmentOf: "unknown" }
+            );
       })
     );
   }
@@ -101,7 +125,7 @@ export class GameBoard {
       )
     )
       return this; // placed ship should not collide with already placed ship
-    //place ship refs
+    //sucessfully place ship refs:
     const shipToPlace = new Ship(shipDetails);
     placementGridBlocks.forEach(
       (gridBlock) => (gridBlock.containsShipSegmentOf = shipToPlace)
@@ -116,7 +140,7 @@ export class GameBoard {
         (gridBlock) =>
           gridBlock.coordinates.columnLetter === coordinates.columnLetter &&
           gridBlock.coordinates.rowNumber === coordinates.rowNumber
-      )
+      )!
       .receiveAttack();
   }
 }
