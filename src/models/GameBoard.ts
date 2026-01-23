@@ -15,20 +15,21 @@ export type ColumnLetter =
 export type RowNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 export type Coordinates = { columnLetter: ColumnLetter; rowNumber: RowNumber };
 
+type TargetGrid = ReadonlyArray<ReadonlyArray<TargetGridBlock>>;
+type OceanGrid = ReadonlyArray<ReadonlyArray<OceanGridBlock>>;
+
 type ShipAlignment = "horizontal" | "vertical";
 
 const [GRID_COLUMNS, GRID_ROWS] = [10, 10];
 const COLUMN_LETTERS = "ABCDEFGHIJ";
 
 export class GameBoard {
-  public readonly oceanGrid: ReadonlyArray<ReadonlyArray<OceanGridBlock>>;
-  private getOpponentPublicGrid?: () => ReadonlyArray<
-    ReadonlyArray<TargetGridBlock>
-  >;
+  public readonly oceanGrid: OceanGrid;
+  private getOpponentPublicGrid?: () => TargetGrid;
 
   constructor() {
-    this.oceanGrid = Array.from({ length: GRID_COLUMNS }, (v, columnIndex) =>
-      Array.from({ length: GRID_ROWS }, (v, rowIndex) => {
+    this.oceanGrid = Array.from({ length: GRID_COLUMNS }, (_v, columnIndex) =>
+      Array.from({ length: GRID_ROWS }, (_v, rowIndex) => {
         const coordinatesFromArrayIndexes: Coordinates = {
           columnLetter: COLUMN_LETTERS[columnIndex] as ColumnLetter,
           rowNumber: (rowIndex + 1) as RowNumber,
@@ -48,7 +49,7 @@ export class GameBoard {
     this.getOpponentPublicGrid = opponentGetPublicGridFunction;
   }
 
-  public get targetGrid(): ReadonlyArray<ReadonlyArray<TargetGridBlock>> {
+  public get targetGrid(): TargetGrid {
     if (!this.getOpponentPublicGrid)
       throw new Error(
         "Opponent grid not set with .linkOpponentBoard(), so cannot return opponent's public grid"
@@ -57,9 +58,10 @@ export class GameBoard {
     return this.getOpponentPublicGrid();
   }
 
-  public getPublicGrid = (): ReadonlyArray<ReadonlyArray<TargetGridBlock>> => {
+  public getPublicGrid = (): TargetGrid => {
     return this.oceanGrid.map((column) =>
       column.map((oceanGridBlock) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { receiveAttack, ...gridBlockWithoutOceanProperties } =
           oceanGridBlock;
         return gridBlockWithoutOceanProperties.isAttacked
