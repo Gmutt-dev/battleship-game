@@ -22,6 +22,12 @@ class GameController {
     [this.activePlayer, this.opponentPlayer] = playersDetails.map(
       (playerDetails) => new Player(playerDetails)
     );
+    this.activePlayer.gameBoard.linkOpponentGameBoard({
+      opponentGameBoard: this.opponentPlayer.gameBoard,
+    });
+    this.opponentPlayer.gameBoard.linkOpponentGameBoard({
+      opponentGameBoard: this.activePlayer.gameBoard,
+    });
   }
 
   //   public startRound({
