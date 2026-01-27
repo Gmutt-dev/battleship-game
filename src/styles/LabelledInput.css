@@ -1,0 +1,6 @@
+.labelled-input {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 5px;
+  text-align: right;
+}
