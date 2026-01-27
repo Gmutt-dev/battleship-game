@@ -32,6 +32,10 @@ export class GameController {
     player1Details: PlayerDetails;
     player2Details: PlayerDetails;
   }): void {
+    if (player1Details === undefined || player2Details === undefined)
+      throw new Error(
+        "Must provide player details for both players to continue"
+      );
     this.activePlayer = new Player(player1Details);
     this.opponentPlayer = new Player(player2Details);
     this.activePlayer.gameBoard.linkOpponentPublicGrid({
