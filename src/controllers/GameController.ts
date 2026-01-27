@@ -5,7 +5,7 @@ export type PlayerDetails = {
   type: PlayerType;
 };
 
-export class GameController {
+class GameController {
   private gameStage: "setup" | "playing" | "end";
   public activePlayer!: Player;
   public opponentPlayer!: Player;
@@ -60,3 +60,12 @@ export class GameController {
 
 //setup with two gameboards // creating and placing of ships (auto place if opponent is computer)-> playing turn by turn -> winner
 //keep track of active player's turn and send attacks to opposing player's gameboard (.receiveattack) and send the return ship value (even if null as miss) to the curren player's gameboard targetgrid (markAttack), announce name of ship that was hit (with length), check for win and end game if winner
+
+export let gameController: GameController | undefined;
+
+export function createGameController(playersDetails: {
+  player1Details: PlayerDetails;
+  player2Details: PlayerDetails;
+}) {
+  gameController = new GameController(playersDetails);
+}
