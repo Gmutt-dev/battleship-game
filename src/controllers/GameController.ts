@@ -1,6 +1,6 @@
 import { Player, type PlayerType } from "../models/Player";
 
-type PlayerDetails = {
+export type PlayerDetails = {
   name: string;
   type: PlayerType;
 };
