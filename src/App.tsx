@@ -2,21 +2,26 @@ import "./App.css";
 import { useState } from "react";
 import { PlayersInput } from "./components/PlayersInput";
 
-type GameStages = "getting players details" | "setup" | "playing" | "end";
+const gameStages = [
+  "getting players details",
+  "setup",
+  "playing",
+  "end",
+] as const;
+type GameStages = (typeof gameStages)[number];
+const initialGameStage = gameStages[0];
 
 function App() {
-  const [gameStage, setGameStage] = useState<GameStages>(
-    "getting players details"
-  );
+  const [gameStage, setGameStage] = useState<GameStages>(initialGameStage);
 
-  function proceedToSetupStage() {
-    setGameStage("setup");
+  function proceedToNextGameStage() {
+    setGameStage(gameStages[gameStages.indexOf(gameStage) + 1]);
   }
 
   return (
     <>
       {gameStage === "getting players details" && (
-        <PlayersInput onSubmitSuccess={proceedToSetupStage} />
+        <PlayersInput onSubmitSuccess={proceedToNextGameStage} />
       )}
     </>
   );
