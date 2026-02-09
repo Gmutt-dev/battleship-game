@@ -1,30 +1,21 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PlayersInput } from "./components/PlayersInput";
-
-const gameStages = [
-  "getting players details",
-  "setup",
-  "playing",
-  "end",
-] as const;
-type GameStages = (typeof gameStages)[number];
-const initialGameStage = gameStages[0];
+import { gameController, type GameStages } from "./controllers/GameController";
+import { emitter } from "./utils/emitter";
 
 function App() {
-  const [gameStage, setGameStage] = useState<GameStages>(initialGameStage);
-
-  function proceedToNextGameStage() {
-    setGameStage(gameStages[gameStages.indexOf(gameStage) + 1]);
-  }
-
-  return (
-    <>
-      {gameStage === "getting players details" && (
-        <PlayersInput onSubmitSuccess={proceedToNextGameStage} />
-      )}
-    </>
+  const [gameStage, setGameStage] = useState<GameStages>(
+    gameController.gameStage,
   );
+
+  useEffect(() => {
+    emitter.on("gameStage updated", (e: GameStages) => {
+      setGameStage(e);
+    });
+  });
+
+  return <>{gameStage === "getting players details" && <PlayersInput />}</>;
 }
 
 export default App;

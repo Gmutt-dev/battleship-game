@@ -2,7 +2,7 @@ import "../styles/PlayersInput.css";
 import { useState } from "react";
 import { LabelledInput } from "./LabelledInput";
 import {
-  createGameController,
+  gameController,
   type PlayerDetails,
 } from "../controllers/GameController";
 
@@ -14,11 +14,7 @@ const defaultPlayers: {
   player2Details: { name: "SupaComputa", type: "computer" },
 };
 
-export function PlayersInput({
-  onSubmitSuccess,
-}: {
-  onSubmitSuccess: () => void;
-}) {
+export function PlayersInput() {
   const [state, setState] = useState<{
     player1Details: PlayerDetails;
     player2Details: PlayerDetails;
@@ -52,8 +48,7 @@ export function PlayersInput({
 
   function submitHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    createGameController(state);
-    onSubmitSuccess();
+    gameController.createPlayers(state);
   }
 
   return (
